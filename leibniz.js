@@ -226,7 +226,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'E?', 'V?'], target, table) && typeof table.E !== table.V;
+        return smatch(['DERIV', 'C?', 'V?'], target, table)  && typeof table.C === "number";
         //return false;
     },
     transform: function(table) {
@@ -235,13 +235,13 @@ var diffConstRule = {
     label: "diffConstRule"
 };
 
-///*
+/*
 console.log("const expression");
-if (diffConstRule.pattern(["DERIV", 4, "X"], table)) {
+if (diffConstRule.pattern(["DERIV", ["+", "Y", "Z"], "X"], table)) {
     var expr = diffConstRule.transform(table);
     console.log(expr);
 }
-//*/
+*/
 
 
 
