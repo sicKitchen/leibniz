@@ -152,13 +152,13 @@ var diffPowerRule = {
     label: "diffPowerRule"
 };
 
-/*
+///*
 var table = {};
 if (diffPowerRule.pattern(["DERIV", ["^", "x", 3], "x"], table)) {
     var expr = diffPowerRule.transform(table);
     console.log(expr);
 }
-*/
+//*/
 
 //
 //  d/dt t = 1
@@ -215,7 +215,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'N?', 'V?'], target, table) && typeof table.N === "number";
+        return smatch(['DERIV', 'E?', 'V?'], target, table) && typeof table.E !== table.V;
         //return false;
     },
     transform: function(table) {
@@ -224,13 +224,13 @@ var diffConstRule = {
     label: "diffConstRule"
 };
 
-/*
+///*
 console.log("const expression");
 if (diffConstRule.pattern(["DERIV", 4, "X"], table)) {
     var expr = diffConstRule.transform(table);
     console.log(expr);
 }
-*/
+//*/
 
 
 
