@@ -152,6 +152,14 @@ var diffPowerRule = {
     label: "diffPowerRule"
 };
 
+/*
+var table = {};
+if (diffPowerRule.pattern(["DERIV", ["^", "x", 3], "x"], table)) {
+    var expr = diffPowerRule.transform(table);
+    console.log(expr);
+}
+*/
+
 //
 //  d/dt t = 1
 //
@@ -166,13 +174,21 @@ var diffXRule = {
     label: "diffXRule"
 };
 
+/*
+if (diffXRule.pattern(["DERIV", "x", "x"], table)) {
+    var expr = diffXRule.transform(table);
+    console.log(expr);
+}
+*/
+
 //
 // (u + v)' = u' + v'
 //
 var diffSumRule = {
     pattern: function(target, table) {
-        
-        return false;
+        return smatch(['DERIV', ['+', 'E?', 'V?'] ])
+
+        //return false;
     },
     transform: function(table) {
         // ...your code here...
@@ -199,15 +215,26 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'E?', 'V?'], target, table) &&
-            table.E === table.V;
-        return false;
+        return smatch(['DERIV', 'N?', 'V?'], target, table) && typeof table.N === "number";
+        //return false;
     },
     transform: function(table) {
         return 0;
     },
     label: "diffConstRule"
 };
+
+/*
+console.log("const expression");
+if (diffConstRule.pattern(["DERIV", 4, "X"], table)) {
+    var expr = diffConstRule.transform(table);
+    console.log(expr);
+}
+*/
+
+
+
+
 
 //
 // (u v)' = uv' + vu'
