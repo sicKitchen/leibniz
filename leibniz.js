@@ -226,7 +226,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'C?', 'V?'], target, table)  && typeof table.C === "number";
+        return smatch(['DERIV', 'C?', 'V?'], target, table);//  && typeof table.C === "number";
         //return false;
     },
     transform: function(table) {
