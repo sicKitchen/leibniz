@@ -212,11 +212,11 @@ if (diffSumRule.pattern(["DERIV", ["+", ["^", "x", 3], ["x"] ], "x"], table)) {
 //
 var diffSubtractRule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+        return smatch(['DERIV', ['-', 'E?', 'U?'], 'V?'], target, table);
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return ['-', ['DERIV', table.E, table.V], ['DERIV', table.U, table.V]];
     },
     label: "diffSubtractRule"
 };
