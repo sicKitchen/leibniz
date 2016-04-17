@@ -1,25 +1,144 @@
+/*
+ * Spencer Kitchen
+ * Symbolic calulus
+ *
+ */
+
+
 //
 // Non-wildcard version of smatch.
 //
 function smatch1(pattern, target) {
-    if (typeof pattern === "number" || typeof pattern == "string")
+    if (typeof pattern === "number" || typeof pattern == "string") {
+        //console.log("got to here 1");
         return pattern === target;          // same number or string
+    }
     else
         return pattern instanceof Array &&  // pattern and
                target instanceof Array &&   // target are arrays
                pattern.length === target.length &&    // of the same length
                pattern.every(function(elem, index) {  // and recursively
+                   //console.log("got to here 2");
                    return smatch1(elem, target[index]); // contain same elems
                });
 }
 
+/*
+// TEST 1
+console.log("** test one **");
+// tests for true pdf:2.1 ----------------------------
+console.log(smatch1(42, 42));
+console.log(smatch1(["fred", 42], ["fred", 42]));
+console.log(smatch1(["fred", [13, "wilma", 94]],
+["fred", [13, "wilma", 94]]));
+// should get 3 true's in a row
+//-----------------------------------------------------
+
+// tests for false pdf:2.1 ----------------------------
+console.log(smatch1("fred", "wilma"));
+console.log(smatch1(42, "fred"));
+console.log(smatch1(42, [42]));
+console.log(smatch1([1, 2, 3], [1, 3, 3]))
+// should get 4 false in a row
+//-----------------------------------------------------
+*/
+
+function smatch2(pattern, target) {
+    // if it is a numbner
+    if (typeof pattern === "number") {
+        if (pattern !== target) {
+            console.log("got to here 1");
+            return null;
+        }
+    }
+
+    // if it is a string ending in "?"
+    else if (typeof pattern === "string" && pattern[(pattern.length - 1)] === "?") {
+        console.log("got to here 2");
+        return true;
+    }
+
+    else if (typeof pattern === "string") {
+        if(pattern !== target) {
+            console.log("got to here 3");
+            return null;
+        }
+    }
+
+    else
+        return pattern instanceof Array &&  // pattern and
+               target instanceof Array &&   // target are arrays
+               pattern.length === target.length &&    // of the same length
+               pattern.every(function(elem, index) {  // and recursively
+                   console.log("got to here 4");
+                   return smatch2(elem, target[index]); // contain same elems
+               });
+}
+
+/*
+// TEST 2
+console.log("** test two **");
+// tests for true pdf:2.2 ----------------------------
+console.log(smatch2("foo?", 42));
+console.log(smatch2("foo?", "fred"));
+console.log(smatch2("foo?", [42, "wilma"]));
+console.log(smatch2(["x?", [13, "y?"]],["fred", [13, "wilma"]]));
+console.log(smatch2(["x?", [13, "y?"]],[[13, 14], [13, "dino"]]));
+// should get 5 true's in a row
+//-----------------------------------------------------
+
+// tests for false pdf:2.2 ----------------------------
+console.log(smatch2(["x?"], 13));
+console.log(smatch2(["x?", 5], ["fred", 6]));
+console.log(smatch2(["foo", "bar?"], ["foo", "dino", "bambam"]));
+// should get 3 false in a row
+//-----------------------------------------------------
+*/
+
+
 function smatch(pattern, target, table) {
     table = table || {}
-
-    // .... your code here ...
-    
-    return null;
+    if (typeof pattern === "number") {
+        if (pattern !== target) {
+            return null;
+        }
+    }
+    else if (typeof pattern === "string" && pattern[(pattern.length - 1)] === "?") {
+        table[pattern.slice(0, (pattern.length -1))] = target;
+    }
+    else if (typeof pattern === "string") {
+        if(pattern !== target) {
+            return null;
+        }
+    }
+    else {
+        if (!(pattern instanceof Array && target instanceof Array &&
+              pattern.length === target.length && pattern.every(function(elem, index) {
+                return smatch(elem, target[index], table);
+              }))) {
+            return null;
+        }
+    }
+    return table;
 }
+
+/*
+// SMATCH TESTING
+console.log("smatch testing");
+console.log("new code");
+// tests for true pdf:2.2 ----------------------------
+console.log(smatch("foo?", 42));
+console.log(smatch("foo?", "fred"));
+console.log(smatch("foo?", [42, "wilma"]));
+//console.log(smatch(["x?", [13, "y?"]],["fred", [13, "wilma"]]));
+//console.log(smatch([x?, [13, y?]],[[13, 14], [13, "dino"]]));
+// should get 5 true's in a row
+//-----------------------------------------------------
+
+var table = {}
+console.log(smatch(["x?", [13, "y?"]],[[13, 14], [13, "dino"]], table))
+console.log(table.y);
+*/
 
 var diffPowerRule = {
     pattern : function(target, table) {
@@ -265,3 +384,4 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     exports.tryAllRules = tryAllRules;
     exports.reduceExpr = reduceExpr;
 }
+
