@@ -171,7 +171,7 @@ var diffXRule = {
 //
 var diffSumRule = {
     pattern: function(target, table) {
-        // ...your code here...
+        
         return false;
     },
     transform: function(table) {
@@ -199,11 +199,13 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        // ...your code here...
+        return smatch(['DERIV', 'E?', 'V?'], target, table) &&
+            table.E === table.V;
         return false;
     },
     transform: function(table) {
-        // ...your code here...
+        transform: function(table) {
+        return 0;
     },
     label: "diffConstRule"
 };
