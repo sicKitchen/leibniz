@@ -204,7 +204,6 @@ var diffConstRule = {
         return false;
     },
     transform: function(table) {
-        transform: function(table) {
         return 0;
     },
     label: "diffConstRule"
