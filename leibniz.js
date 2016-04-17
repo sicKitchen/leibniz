@@ -186,15 +186,26 @@ if (diffXRule.pattern(["DERIV", "x", "x"], table)) {
 //
 var diffSumRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', ['+', 'E?', 'V?'] ])
+        return smatch(['DERIV', ['+', 'E?', 'U?'], 'V?'], target, table);
 
         //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return ['+', ['DERIV', table.E, table.V], ['DERIV', table.U, table.V]];
     },
     label: "diffSumRule"
 };
+
+///*
+console.log("diff sum rule");
+var table = {};
+if (diffSumRule.pattern(["DERIV", ["+", ["^", "x", 3], ["x"] ], "x"], table)) {
+    var expr = diffSumRule.transform(table);
+    console.log(expr);
+}
+//*/
+
+
 
 //
 // (u - v)' = u' - v'
@@ -215,7 +226,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'E?', 'V?'], target, table);// && typeof table.E !== table.V;
+        return smatch(['DERIV', 'E?', 'V?'], target, table) && typeof table.E !== table.V;
         //return false;
     },
     transform: function(table) {
