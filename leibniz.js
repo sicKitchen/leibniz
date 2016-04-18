@@ -361,11 +361,12 @@ var unityRule = {
 //
 var times0Rule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+        return smatch(['*','E?', 0], target,table) ||
+        	   smatch(['*', 0, 'E?'], target, table) 
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return 0;
     },
     label: "time0Rule"
 };
