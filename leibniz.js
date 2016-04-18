@@ -344,11 +344,14 @@ var expt1Rule = {
 //
 var unityRule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+    	return smatch(['*', 'E?', 1], target, table) ||
+    		   smatch(['*', 1, 'E?'], target, table) ||
+    		   smatch(['+', 'E?', 0], target, table) ||
+    		   smatch(['+', 0, 'E?'], target, table);
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return table.E;
     },
     label: "unityRule"
 };
