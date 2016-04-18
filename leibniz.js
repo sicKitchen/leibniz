@@ -253,11 +253,6 @@ function check(C, V) {
 	return false;
 }
 
-
-
-
-
-
 /*
 console.log("const expression");
 if (diffConstRule.pattern(["DERIV", ["+", "Y", "Z"], "X"], table)) {
@@ -431,11 +426,25 @@ function tryAllRules(expr) {
     var rules = [
         diffPowerRule,
         diffXRule,
-        // ... your code here ...
+        diffSumRule,
+        diffSubtractRule,
+        diffProductRule, 
+        expt0Rule, 
+        expt1Rule, 
+        unityRule,
+		times0Rule, 
+		diffConstRule
     ];
     // ... your code here ...
+    for (var i = 0; i < rules.length; i++) {
+    	tryRule(rules[i], expr);
+    }
     return null;
+
+    
 }
+
+
 
 //
 // Repeatedly try to reduce expression by applying rules.
