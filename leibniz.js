@@ -315,7 +315,7 @@ var foldCoeff1Rule = {
         //return false;
     },
     transform: function(table) {
-        return ['*', (table.A * table.B), taable.E];
+        return ['*', (table.A * table.B), table.E];
     },
     label: "foldCoeff1Rule"
 };
