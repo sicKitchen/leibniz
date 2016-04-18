@@ -297,10 +297,13 @@ var foldBinopRule = {
         else if (table.OPS === '*') {
         	return table.E * table.U
         }
-        else if(table.OPERATOR === '/'){ 
-        	return (table.E / table.U); 
+        else if (table.OPS === '/') { 
+        	return table.E / table.U; 
         }
-        
+        else if (table.OPS === '^') {
+        	return Math.pow(table.E, table.U);
+        }
+
     },
     label: "foldBinopRule"
 };
