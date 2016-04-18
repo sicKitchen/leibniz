@@ -206,7 +206,6 @@ if (diffSumRule.pattern(["DERIV", ["+", ["^", "x", 3], ["x"] ], "x"], table)) {
 */
 
 
-
 //
 // (u - v)' = u' - v'
 //
@@ -243,10 +242,6 @@ if (diffConstRule.pattern(["DERIV", ["+", "Y", "Z"], "X"], table)) {
 }
 */
 
-
-
-
-
 //
 // (u v)' = uv' + vu'
 //
@@ -261,21 +256,14 @@ var diffProductRule = {
     label: "diffProductRule"
 };
 
-///*
+/*
 console.log("diff product rule");
 var table = {};
 if (diffProductRule.pattern(["DERIV", ["*", "x", "z"], "x"], table)) {
     var expr = diffProductRule.transform(table);
     console.log(expr);
 }
-//*/
-
-
-
-
-
-
-
+*/
 
 
 //
@@ -308,19 +296,37 @@ var foldBinopRule = {
     label: "foldBinopRule"
 };
 
+
+
+
+
+
+
+
+
+
 //
 // 3*(2*E) = 6*E  : [*, a, [*, b, e]] => [*, (a*b), e]
 //
 var foldCoeff1Rule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+        return smatch(['*', 'A?', ['*', 'B?', 'E?']], target, table) && 
+        				(typeof table.A === "number" && typeof table.B === "number");
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return ['*', (table.A * table.B), taable.E];
     },
     label: "foldCoeff1Rule"
 };
+
+
+
+
+
+
+
+
 
 //
 //  x^0 = 1
