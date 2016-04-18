@@ -226,7 +226,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'C?', 'V?'], target, table);//  && typeof table.C === "number";
+        return smatch(['DERIV', 'C?', 'V?'], target, table && (!(elmCheck(table.C, table.V))));
         //return false;
     },
     transform: function(table) {
@@ -264,7 +264,7 @@ var diffProductRule = {
 ///*
 console.log("diff product rule");
 var table = {};
-if (diffProductRule.pattern(["DERIV", ["*", 4, "x"], "x"], table)) {
+if (diffProductRule.pattern(["DERIV", ["*", "x", "z"], "x"], table)) {
     var expr = diffProductRule.transform(table);
     console.log(expr);
 }
