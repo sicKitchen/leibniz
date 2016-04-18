@@ -225,7 +225,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'C?', 'V?'], target, table) && check(table.C, table.V);
+        return smatch(['DERIV', 'C?', 'V?'], target, table) && (!(check(table.C, table.V)));
 
 
         //return false;
@@ -242,15 +242,15 @@ function check(C, V) {
 		for (var i = 0; i < C.length; i++) {
 			// if it is equal
 			if (C[i] === V) {
-				return false;
+				return true;
 			}
 			else if (check(C[i], V)) {
-				return false;
+				return true;
 			}
 		}
 	}
 	
-	return true;
+	return false;
 }
 
 
