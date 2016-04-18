@@ -225,11 +225,11 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'C?', 'T?'], target, table) && 
-        	   table.C instanceof Array &&
+        return smatch(['DERIV', 'C?', 'T?'], target, table) || 
+        	   (table.C instanceof Array &&
         	   table.C.every(function(elem, index) {
         	   	return smatch(elem, target[index])
-        	   });
+        	   }));
 
         //return false;
     },
