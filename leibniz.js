@@ -316,11 +316,11 @@ var foldCoeff1Rule = {
 //
 var expt0Rule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+        return smatch(['^', 'E?', 'EXP?'], target,table) && table.EXP === 0;
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return 1;
     },
     label: "expt0Rule"
 };
