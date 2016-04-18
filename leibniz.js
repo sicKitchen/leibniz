@@ -226,7 +226,7 @@ var diffSubtractRule = {
 //
 var diffConstRule = {
     pattern: function(target, table) {
-        return smatch(['DERIV', 'C?', 'V?'], target, table && (!(elmCheck(table.C, table.V))));
+        return smatch(['DERIV', 'C?', 'V?'], target, table);// && ;
         //return false;
     },
     transform: function(table) {
@@ -256,7 +256,7 @@ var diffProductRule = {
         //return false;
     },
     transform: function(table) {
-        return ["+", ["*", table.E, ["DERIV" , table.E, table.V]], ["*", table.U, ["DERIV" , table.U, table.V]]]
+        return ["+", ["*", table.E, ["DERIV" , table.U, table.V]], ["*", table.U, ["DERIV" , table.E, table.V]]]
     },
     label: "diffProductRule"
 };
@@ -283,11 +283,24 @@ if (diffProductRule.pattern(["DERIV", ["*", "x", "z"], "x"], table)) {
 //
 var foldBinopRule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+        return (smatch(['OPS?', 'E?', 'U?'], target, table)	&&
+								(typeof table.E === "number" && typeof table.U === "number"));
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        if (table.OPS === '+') {
+        	return table.E + table.U
+        }
+        else if (table.OPS === '-') {
+        	return table.E - table.U
+        }
+        else if (table.OPS === '*') {
+        	return table.E * table.U
+        }
+        else if(table.OPERATOR === '/'){ 
+        	return (table.E / table.U); 
+        }
+        
     },
     label: "foldBinopRule"
 };
