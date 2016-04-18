@@ -296,15 +296,6 @@ var foldBinopRule = {
     label: "foldBinopRule"
 };
 
-
-
-
-
-
-
-
-
-
 //
 // 3*(2*E) = 6*E  : [*, a, [*, b, e]] => [*, (a*b), e]
 //
@@ -319,14 +310,6 @@ var foldCoeff1Rule = {
     },
     label: "foldCoeff1Rule"
 };
-
-
-
-
-
-
-
-
 
 //
 //  x^0 = 1
@@ -347,11 +330,11 @@ var expt0Rule = {
 //
 var expt1Rule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+    	return smatch(['^', 'E?', 'EXP?'], target, table) && table.EXP === 1;
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return table.E;
     },
     label: "expt1Rule"
 };
