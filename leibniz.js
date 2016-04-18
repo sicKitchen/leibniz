@@ -435,16 +435,19 @@ function tryAllRules(expr) {
 		times0Rule, 
 		diffConstRule
     ];
-    // ... your code here ...
-    for (var i = 0; i < rules.length; i++) {
-    	tryRule(rules[i], expr);
-    }
-    return null;
 
     
+    // ... your code here ...
+    var tmp;
+    for (var i = 0; i < rules.length; i++) {
+        tmp = tryRule(rules[i], expr);
+        if (tmp !== null) {return tmp};
+    }
+    return null;
 }
 
-
+// final test, should get [ '+', [ '*', 2, 'X' ], 2 ]
+//console.log(reduceExpr(['DERIV', ['+', ['^', 'X', 2 ], ['*', 2, 'X']], 'X']));
 
 //
 // Repeatedly try to reduce expression by applying rules.
