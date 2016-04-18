@@ -152,13 +152,13 @@ var diffPowerRule = {
     label: "diffPowerRule"
 };
 
-///*
+/*
 var table = {};
 if (diffPowerRule.pattern(["DERIV", ["^", "x", 3], "x"], table)) {
     var expr = diffPowerRule.transform(table);
     console.log(expr);
 }
-//*/
+*/
 
 //
 //  d/dt t = 1
@@ -196,14 +196,14 @@ var diffSumRule = {
     label: "diffSumRule"
 };
 
-///*
+/*
 console.log("diff sum rule");
 var table = {};
 if (diffSumRule.pattern(["DERIV", ["+", ["^", "x", 3], ["x"] ], "x"], table)) {
     var expr = diffSumRule.transform(table);
     console.log(expr);
 }
-//*/
+*/
 
 
 
@@ -252,14 +252,31 @@ if (diffConstRule.pattern(["DERIV", ["+", "Y", "Z"], "X"], table)) {
 //
 var diffProductRule = {
     pattern: function(target, table) {
-        // ...your code here...
-        return false;
+        return smatch(['DERIV', ['*', 'E?', 'U?'], 'V?'], target, table);
+        //return false;
     },
     transform: function(table) {
-        // ...your code here...
+        return ["+", ["*", table.E, ["DERIV" , table.E, table.V]], ["*", table.U, ["DERIV" , table.U, table.V]]]
     },
     label: "diffProductRule"
 };
+
+///*
+console.log("diff product rule");
+var table = {};
+if (diffProductRule.pattern(["DERIV", ["*", 4, "x"], "x"], table)) {
+    var expr = diffProductRule.transform(table);
+    console.log(expr);
+}
+//*/
+
+
+
+
+
+
+
+
 
 //
 // 3 + 4 = 7   (evaluate constant binary expressions)
