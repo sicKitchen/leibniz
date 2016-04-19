@@ -2,10 +2,11 @@
  * Spencer Kitchen
  * Symbolic calulus
  *
+ * CS 355
+ *
  */
 
-
-//
+//  
 // Non-wildcard version of smatch.
 //
 function smatch1(pattern, target) {
@@ -44,33 +45,30 @@ console.log(smatch1([1, 2, 3], [1, 3, 3]))
 */
 
 function smatch2(pattern, target) {
-    // if it is a numbner
+    // if it is a number
     if (typeof pattern === "number") {
         if (pattern !== target) {
-            console.log("got to here 1");
+            //console.log("got to here 1");
             return null;
         }
     }
-
     // if it is a string ending in "?"
     else if (typeof pattern === "string" && pattern[(pattern.length - 1)] === "?") {
-        console.log("got to here 2");
+        //console.log("got to here 2");
         return true;
     }
-
     else if (typeof pattern === "string") {
         if(pattern !== target) {
-            console.log("got to here 3");
+            //console.log("got to here 3");
             return null;
         }
     }
-
     else
         return pattern instanceof Array &&  // pattern and
                target instanceof Array &&   // target are arrays
                pattern.length === target.length &&    // of the same length
                pattern.every(function(elem, index) {  // and recursively
-                   console.log("got to here 4");
+                   //console.log("got to here 4");
                    return smatch2(elem, target[index]); // contain same elems
                });
 }
@@ -94,7 +92,6 @@ console.log(smatch2(["foo", "bar?"], ["foo", "dino", "bambam"]));
 // should get 3 false in a row
 //-----------------------------------------------------
 */
-
 
 function smatch(pattern, target, table) {
     table = table || {}
@@ -122,24 +119,6 @@ function smatch(pattern, target, table) {
     return table;
 }
 
-/*
-// SMATCH TESTING
-console.log("smatch testing");
-console.log("new code");
-// tests for true pdf:2.2 ----------------------------
-console.log(smatch("foo?", 42));
-console.log(smatch("foo?", "fred"));
-console.log(smatch("foo?", [42, "wilma"]));
-//console.log(smatch(["x?", [13, "y?"]],["fred", [13, "wilma"]]));
-//console.log(smatch([x?, [13, y?]],[[13, 14], [13, "dino"]]));
-// should get 5 true's in a row
-//-----------------------------------------------------
-
-var table = {}
-console.log(smatch(["x?", [13, "y?"]],[[13, 14], [13, "dino"]], table))
-console.log(table.y);
-*/
-
 var diffPowerRule = {
     pattern : function(target, table) {
         return smatch(['DERIV', ['^', 'E?', 'N?'], 'V?'], target, table) &&
@@ -151,14 +130,6 @@ var diffPowerRule = {
     },
     label: "diffPowerRule"
 };
-
-/*
-var table = {};
-if (diffPowerRule.pattern(["DERIV", ["^", "x", 3], "x"], table)) {
-    var expr = diffPowerRule.transform(table);
-    console.log(expr);
-}
-*/
 
 //
 //  d/dt t = 1
@@ -174,21 +145,12 @@ var diffXRule = {
     label: "diffXRule"
 };
 
-/*
-if (diffXRule.pattern(["DERIV", "x", "x"], table)) {
-    var expr = diffXRule.transform(table);
-    console.log(expr);
-}
-*/
-
 //
 // (u + v)' = u' + v'
 //
 var diffSumRule = {
     pattern: function(target, table) {
         return smatch(['DERIV', ['+', 'E?', 'U?'], 'V?'], target, table);
-
-        //return false;
     },
     transform: function(table) {
         return ['+', ['DERIV', table.E, table.V], ['DERIV', table.U, table.V]];
@@ -196,23 +158,12 @@ var diffSumRule = {
     label: "diffSumRule"
 };
 
-/*
-console.log("diff sum rule");
-var table = {};
-if (diffSumRule.pattern(["DERIV", ["+", ["^", "x", 3], ["x"] ], "x"], table)) {
-    var expr = diffSumRule.transform(table);
-    console.log(expr);
-}
-*/
-
-
 //
 // (u - v)' = u' - v'
 //
 var diffSubtractRule = {
     pattern: function(target, table) {
         return smatch(['DERIV', ['-', 'E?', 'U?'], 'V?'], target, table);
-        //return false;
     },
     transform: function(table) {
         return ['-', ['DERIV', table.E, table.V], ['DERIV', table.U, table.V]];
@@ -226,9 +177,6 @@ var diffSubtractRule = {
 var diffConstRule = {
     pattern: function(target, table) {
         return smatch(['DERIV', 'C?', 'V?'], target, table) && (!(check(table.C, table.V)));
-
-
-        //return false;
     },
     transform: function(table) {
         return 0;
@@ -249,17 +197,8 @@ function check(C, V) {
 			}
 		}
 	}
-	
 	return false;
 }
-
-/*
-console.log("const expression");
-if (diffConstRule.pattern(["DERIV", ["+", "Y", "Z"], "X"], table)) {
-    var expr = diffConstRule.transform(table);
-    console.log(expr);
-}
-*/
 
 //
 // (u v)' = uv' + vu'
@@ -267,23 +206,12 @@ if (diffConstRule.pattern(["DERIV", ["+", "Y", "Z"], "X"], table)) {
 var diffProductRule = {
     pattern: function(target, table) {
         return smatch(['DERIV', ['*', 'E?', 'U?'], 'V?'], target, table);
-        //return false;
     },
     transform: function(table) {
         return ["+", ["*", table.E, ["DERIV" , table.U, table.V]], ["*", table.U, ["DERIV" , table.E, table.V]]]
     },
     label: "diffProductRule"
 };
-
-/*
-console.log("diff product rule");
-var table = {};
-if (diffProductRule.pattern(["DERIV", ["*", "x", "z"], "x"], table)) {
-    var expr = diffProductRule.transform(table);
-    console.log(expr);
-}
-*/
-
 
 //
 // 3 + 4 = 7   (evaluate constant binary expressions)
@@ -292,7 +220,6 @@ var foldBinopRule = {
     pattern: function(target, table) {
         return (smatch(['OPS?', 'E?', 'U?'], target, table)	&&
 								(typeof table.E === "number" && typeof table.U === "number"));
-        //return false;
     },
     transform: function(table) {
         if (table.OPS === '+') {
@@ -310,7 +237,6 @@ var foldBinopRule = {
         else if (table.OPS === '^') {
         	return Math.pow(table.E, table.U);
         }
-
     },
     label: "foldBinopRule"
 };
@@ -322,7 +248,6 @@ var foldCoeff1Rule = {
     pattern: function(target, table) {
         return smatch(['*', 'A?', ['*', 'B?', 'E?']], target, table) && 
         				(typeof table.A === "number" && typeof table.B === "number");
-        //return false;
     },
     transform: function(table) {
         return ['*', (table.A * table.B), table.E];
@@ -336,7 +261,6 @@ var foldCoeff1Rule = {
 var expt0Rule = {
     pattern: function(target, table) {
         return smatch(['^', 'E?', 'EXP?'], target,table) && table.EXP === 0;
-        //return false;
     },
     transform: function(table) {
         return 1;
@@ -350,7 +274,6 @@ var expt0Rule = {
 var expt1Rule = {
     pattern: function(target, table) {
     	return smatch(['^', 'E?', 'EXP?'], target, table) && table.EXP === 1;
-        //return false;
     },
     transform: function(table) {
         return table.E;
@@ -367,7 +290,6 @@ var unityRule = {
     		   smatch(['*', 1, 'E?'], target, table) ||
     		   smatch(['+', 'E?', 0], target, table) ||
     		   smatch(['+', 0, 'E?'], target, table);
-        //return false;
     },
     transform: function(table) {
         return table.E;
@@ -382,7 +304,6 @@ var times0Rule = {
     pattern: function(target, table) {
         return smatch(['*','E?', 0], target,table) ||
         	   smatch(['*', 0, 'E?'], target, table) 
-        //return false;
     },
     transform: function(table) {
         return 0;
@@ -435,9 +356,6 @@ function tryAllRules(expr) {
 		times0Rule, 
 		diffConstRule
     ];
-
-    
-    // ... your code here ...
     var tmp;
     for (var i = 0; i < rules.length; i++) {
         tmp = tryRule(rules[i], expr);
@@ -458,11 +376,6 @@ function reduceExpr(expr) {
     return (e != null) ? reduceExpr(e) : expr;
 }
 
-//if (diffPowerRule.pattern(['DERIV', ['^', 'X', 3], 'X'], table)) {
-//     var f = diffPowerRule.transform(table);
-//     console.log(f);
-// }
-
 //
 // Node module exports.
 //
@@ -470,7 +383,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     exports.smatch = smatch;
     exports.diffPowerRule = diffPowerRule;
     exports.tryRule = tryRule;
-
     exports.diffXRule = diffXRule;
     exports.diffSumRule = diffSumRule;
     exports.diffConstRule = diffConstRule;
@@ -481,7 +393,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     exports.expt1Rule = expt1Rule;
     exports.unityRule = unityRule;
     exports.times0Rule = times0Rule;
-
     exports.tryAllRules = tryAllRules;
     exports.reduceExpr = reduceExpr;
 }
