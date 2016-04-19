@@ -353,8 +353,8 @@ function tryAllRules(expr) {
         expt0Rule, 
         expt1Rule, 
         unityRule,
-		times0Rule, 
-		diffConstRule
+        times0Rule, 
+        diffConstRule
     ];
     var tmp;
     for (var i = 0; i < rules.length; i++) {
