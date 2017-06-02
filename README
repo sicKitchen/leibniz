@@ -16,3 +16,8 @@ provided test cases ............... package.json
 				    unparse.js
 				    /lisp
 				    /t
+				    
+To run make sure node is installed.
+
+From terminal:
+`node test.js`
